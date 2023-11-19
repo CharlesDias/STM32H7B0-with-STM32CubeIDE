@@ -2,6 +2,10 @@
 CAD.formats=
 CAD.pinconfig=
 CAD.provider=
+CORTEX_M7.CPU_DCache=Enabled
+CORTEX_M7.CPU_ICache=Enabled
+CORTEX_M7.IPParameters=CPU_ICache,CPU_DCache,default_mode_Activation
+CORTEX_M7.default_mode_Activation=0
 File.Version=6
 GPIO.groupedBy=
 KeepUserPlacement=false
