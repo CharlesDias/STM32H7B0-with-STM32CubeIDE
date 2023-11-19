@@ -47,6 +47,8 @@
 #include "stm32h7xx.h"
 #include <math.h>
 
+#define EXT_Flash_SPI   /*! Relocate the vector table to external QSPI Flash */
+
 #if !defined  (HSE_VALUE)
 #define HSE_VALUE    ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
@@ -86,6 +88,9 @@
      anywhere in FLASH BANK1 or AXI SRAM, else the vector table is kept at the automatic
      remap of boot address selected */
 /* #define USER_VECT_TAB_ADDRESS */
+
+#define VECT_TAB_OFFSET  0x00000000UL       /*!< Vector Table base offset field.
+                                      This value must be a multiple of 0x200. */
 
 #if defined(USER_VECT_TAB_ADDRESS)
 #if defined(DUAL_CORE) && defined(CORE_CM4)
@@ -296,6 +301,10 @@ void SystemInit (void)
 #if defined(USER_VECT_TAB_ADDRESS)
   SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal D1 AXI-RAM or in Internal FLASH */
 #endif /* USER_VECT_TAB_ADDRESS */
+
+#if defined(EXT_Flash_SPI)
+  SCB->VTOR = 0x90000000 | VECT_TAB_OFFSET;
+#endif
 
 #endif /*DUAL_CORE && CORE_CM4*/
 }
